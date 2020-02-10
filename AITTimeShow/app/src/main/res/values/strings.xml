@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">AITTimeShow</string>
+    <string name="hint_name">Enter your name here</string>
+    <string name="text_name">Name is</string>
+
+
+    <string name="text_date">%1$s, time is: %2$s</string>
+
 </resources>

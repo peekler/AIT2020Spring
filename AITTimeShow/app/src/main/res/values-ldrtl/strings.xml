@@ -1,0 +1,5 @@
+<resources>
+
+    <string name="text_date">%2$s, time is: %1$s</string>
+
+</resources>
