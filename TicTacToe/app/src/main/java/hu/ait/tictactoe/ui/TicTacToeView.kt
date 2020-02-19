@@ -1,21 +1,25 @@
 package hu.ait.tictactoe.ui
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.PointF
+import android.graphics.*
+import android.media.tv.TvView
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import hu.ait.tictactoe.MainActivity
+import hu.ait.tictactoe.R
 import hu.ait.tictactoe.model.TicTacToeModel
 
 class TicTacToeView(contex: Context?, attrs: AttributeSet?) : View(contex, attrs) {
 
     var paintBackGround = Paint()
     var paintLine = Paint()
+    var paintText = Paint()
+
+    var bitmapBg = BitmapFactory.decodeResource(
+        contex?.resources,
+        R.drawable.background)
 
     init {
         paintBackGround.color = Color.BLACK
@@ -24,13 +28,30 @@ class TicTacToeView(contex: Context?, attrs: AttributeSet?) : View(contex, attrs
         paintLine.color = Color.WHITE
         paintLine.style = Paint.Style.STROKE
         paintLine.strokeWidth = 5f
+
+        paintText.color = Color.GREEN
+        paintText.textSize = 60f
     }
 
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
 
+        paintText.textSize = height / 3f
+
+        bitmapBg = Bitmap.createScaledBitmap(bitmapBg, width / 3,
+            height / 3, false)
+    }
 
     override fun onDraw(canvas: Canvas?) {
         canvas?.drawRect(0f, 0f, width.toFloat(),
             height.toFloat(), paintBackGround)
+
+
+        canvas?.drawBitmap(bitmapBg, 0f, 0f, null)
+
+
+        canvas?.drawText("1", 0f, height/3f, paintText)
+
 
         drawBoard(canvas)
 
@@ -97,12 +118,30 @@ class TicTacToeView(contex: Context?, attrs: AttributeSet?) : View(contex, attrs
 
                 invalidate() // redraws the view, the onDraw(...) will be called
 
-                Toast.makeText((context as MainActivity), "win", Toast.LENGTH_LONG).show()
+                //Toast.makeText((context as MainActivity), "win", Toast.LENGTH_LONG).show()
+
+                var nextPlayer =
+                    if (TicTacToeModel.getNextPlayer() == TicTacToeModel.CIRCLE) "O" else "X"
+
+                (context as MainActivity).showStatusText(
+                    context.resources.getString(R.string.text_next_player, nextPlayer)
+                )
+
             }
         }
 
         return true
     }
+
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val w = View.MeasureSpec.getSize(widthMeasureSpec)
+        val h = View.MeasureSpec.getSize(heightMeasureSpec)
+        val d = if (w == 0) h else if (h == 0) w else if (w < h) w else h
+        setMeasuredDimension(d, d)
+    }
+
+
 
     public fun restart() {
         TicTacToeModel.resetModel()
