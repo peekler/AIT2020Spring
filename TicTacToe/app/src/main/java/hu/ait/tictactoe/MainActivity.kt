@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.ViewAnimationUtils
+import hu.ait.tictactoe.model.TicTacToeModel
+import hu.ait.tictactoe.ui.TicTacToeView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -18,6 +20,13 @@ class MainActivity : AppCompatActivity() {
             revealTicTacToe()
         }
     }
+
+
+    public fun TicTacToeView.restart() {
+        TicTacToeModel.resetModel()
+        invalidate()
+    }
+
 
     public fun showStatusText(message: String){
         tvStatus.text = message

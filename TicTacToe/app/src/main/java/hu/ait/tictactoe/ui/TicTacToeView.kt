@@ -143,10 +143,5 @@ class TicTacToeView(contex: Context?, attrs: AttributeSet?) : View(contex, attrs
 
 
 
-    public fun restart() {
-        TicTacToeModel.resetModel()
-        invalidate()
-    }
-
 
 }
