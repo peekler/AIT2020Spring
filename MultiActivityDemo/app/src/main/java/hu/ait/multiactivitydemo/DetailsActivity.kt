@@ -13,13 +13,15 @@ class DetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
 
-        var data = intent.getStringExtra(MainActivity.KEY_DATA)
+        var data = intent.getStringExtra(
+            MainActivity.KEY_DATA)
 
-        tvData.text = MyDataManager.demo
+        tvData.text = data
 
         btnAccept.setOnClickListener {
             var intentResult = Intent()
-            intentResult.putExtra(MainActivity.KEY_RES, "accept")
+            intentResult.putExtra(
+                MainActivity.KEY_RES, "accept")
 
             setResult(Activity.RESULT_OK, intentResult)
 
@@ -34,7 +36,8 @@ class DetailsActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         //super.onBackPressed()
-
-        Toast.makeText(this, "You can not exit",Toast.LENGTH_LONG).show()
+        Toast.makeText(this,
+            "You can not exit",
+            Toast.LENGTH_LONG).show()
     }
 }

@@ -23,11 +23,13 @@ class MainActivity : AppCompatActivity() {
         btnStart.setOnClickListener {
             var intentDetails = Intent()
 
-            intentDetails.setClass(this, DetailsActivity::class.java)
+            intentDetails.setClass(this,
+                DetailsActivity::class.java)
 
-            intentDetails.putExtra(KEY_DATA, etData.text.toString())
+            intentDetails.putExtra(KEY_DATA,
+                etData.text.toString())
 
-            MyDataManager.demo = etData.text.toString()
+
 
 
             startActivityForResult(intentDetails, REQ_ANSWER)
@@ -35,7 +37,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int,
+                                  resultCode: Int,
+                                  data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == REQ_ANSWER){
