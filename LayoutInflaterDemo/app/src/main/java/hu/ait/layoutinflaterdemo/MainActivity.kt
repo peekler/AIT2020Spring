@@ -21,6 +21,12 @@ class MainActivity : AppCompatActivity() {
             null, false)
         todoRow.tvTodo.text = etTodo.text.toString()
 
-        layoutContent.addView(todoRow)
+        todoRow.btnDelete.setOnClickListener {
+            layoutContent.removeView(todoRow)
+        }
+
+        layoutContent.addView(todoRow, 0)
+
+        etTodo.setText("")
     }
 }
