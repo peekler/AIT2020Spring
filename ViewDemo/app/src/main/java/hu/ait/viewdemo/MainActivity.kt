@@ -8,7 +8,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val cityNames = arrayOf("New York", "New Jersey", "New Delhi", "Budapest", "Bukarest")
+    private val cityNames = arrayOf("New York",
+        "New Jersey",
+        "New Delhi", "Budapest", "Bukarest")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
