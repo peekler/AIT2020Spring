@@ -9,8 +9,10 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import hu.ait.todorecyclerviewdemo.adapter.TodoAdapter
 import hu.ait.todorecyclerviewdemo.data.Todo
+import hu.ait.todorecyclerviewdemo.touch.TodoReyclerTouchCallback
 import kotlinx.android.synthetic.main.activity_scrolling.*
 import java.util.*
 
@@ -31,6 +33,10 @@ class ScrollingActivity : AppCompatActivity() {
 
         todoAdapter = TodoAdapter(this)
         recyclerTodo.adapter = todoAdapter
+
+        val touchCallbakList = TodoReyclerTouchCallback(todoAdapter)
+        val itemTouchHelper = ItemTouchHelper(touchCallbakList)
+        itemTouchHelper.attachToRecyclerView(recyclerTodo)
 
         val itemDecoration = DividerItemDecoration(
             this, DividerItemDecoration.VERTICAL

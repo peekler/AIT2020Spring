@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import hu.ait.todorecyclerviewdemo.R
 import hu.ait.todorecyclerviewdemo.data.Todo
+import hu.ait.todorecyclerviewdemo.touch.TodoTouchHelperCallback
 import kotlinx.android.synthetic.main.todo_row.view.*
+import java.util.*
 
-class TodoAdapter : RecyclerView.Adapter<TodoAdapter.ViewHolder> {
+class TodoAdapter : RecyclerView.Adapter<TodoAdapter.ViewHolder>,
+    TodoTouchHelperCallback {
 
     var todoItems = mutableListOf<Todo>(
         Todo("2020. 03. 12.", false, "Todo1"),
@@ -39,6 +42,15 @@ class TodoAdapter : RecyclerView.Adapter<TodoAdapter.ViewHolder> {
         holder.tvDate.text = currentTodo.createDate
         holder.cbDone.text = currentTodo.todoText
         holder.cbDone.isChecked = currentTodo.done
+
+        holder.btnDelete.setOnClickListener {
+            deleteTodo(holder.adapterPosition)
+        }
+    }
+
+    private fun deleteTodo(position: Int) {
+        todoItems.removeAt(position)
+        notifyItemRemoved(position)
     }
 
     public fun addTodo(todo: Todo) {
@@ -48,10 +60,19 @@ class TodoAdapter : RecyclerView.Adapter<TodoAdapter.ViewHolder> {
         notifyItemInserted(todoItems.lastIndex)
     }
 
+    override fun onDismissed(position: Int) {
+        deleteTodo(position)
+    }
+
+    override fun onItemMoved(fromPosition: Int, toPosition: Int) {
+        Collections.swap(todoItems, fromPosition, toPosition)
+        notifyItemMoved(fromPosition, toPosition)
+    }
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvDate = itemView.tvDate
         val cbDone = itemView.cbDone
-
+        val btnDelete = itemView.btnDelete
     }
 
 }

@@ -38,8 +38,8 @@ class TicTacToeView(contex: Context?, attrs: AttributeSet?) : View(contex, attrs
 
         paintText.textSize = height / 3f
 
-        bitmapBg = Bitmap.createScaledBitmap(bitmapBg, width / 3,
-            height / 3, false)
+        bitmapBg = Bitmap.createScaledBitmap(bitmapBg, width,
+            height, false)
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -50,7 +50,7 @@ class TicTacToeView(contex: Context?, attrs: AttributeSet?) : View(contex, attrs
         canvas?.drawBitmap(bitmapBg, 0f, 0f, null)
 
 
-        canvas?.drawText("1", 0f, height/3f, paintText)
+        //canvas?.drawText("1", 0f, height/3f, paintText)
 
 
         drawBoard(canvas)
