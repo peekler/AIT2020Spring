@@ -25,6 +25,10 @@ class MainActivity : AppCompatActivity() {
             queryGrades()
         }
 
+        btnDeleteAll.setOnClickListener {
+            deleteAllGrades()
+        }
+
     }
 
     fun saveGrade(grade: Grade) {
@@ -36,7 +40,7 @@ class MainActivity : AppCompatActivity() {
     fun queryGrades(){
         Thread {
             val grades = AppDatabase.getInstance(this).gradeDao().
-                    getSpecificGrades("A+")
+                    getAllGrades()
 
             runOnUiThread{
                 tvResult.text = ""
@@ -45,6 +49,12 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+        }.start()
+    }
+
+    private fun deleteAllGrades() {
+        Thread {
+            AppDatabase.getInstance(this).gradeDao().deleteAllGrades()
         }.start()
     }
 

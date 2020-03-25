@@ -11,14 +11,19 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import hu.ait.todorecyclerviewdemo.adapter.TodoAdapter
+import hu.ait.todorecyclerviewdemo.data.AppDatabase
 import hu.ait.todorecyclerviewdemo.data.Todo
 import hu.ait.todorecyclerviewdemo.touch.TodoReyclerTouchCallback
 import kotlinx.android.synthetic.main.activity_scrolling.*
 import java.util.*
 
-class ScrollingActivity : AppCompatActivity() {
+class ScrollingActivity : AppCompatActivity(), TodoDialog.TodoHandler {
 
     lateinit var todoAdapter: TodoAdapter
+
+    companion object{
+        const val KEY_EDIT = "KEY_EDIT"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,41 +36,66 @@ class ScrollingActivity : AppCompatActivity() {
             showAddTodoDialog()
         }
 
-        todoAdapter = TodoAdapter(this)
-        recyclerTodo.adapter = todoAdapter
+        initRecyclerView()
+    }
 
-        val touchCallbakList = TodoReyclerTouchCallback(todoAdapter)
-        val itemTouchHelper = ItemTouchHelper(touchCallbakList)
-        itemTouchHelper.attachToRecyclerView(recyclerTodo)
+    private fun initRecyclerView() {
+        Thread {
+            var todoList = AppDatabase.getInstance(this).todoDao().getAllTodos()
 
-        val itemDecoration = DividerItemDecoration(
-            this, DividerItemDecoration.VERTICAL
-        )
-        recyclerTodo.addItemDecoration(itemDecoration)
+            runOnUiThread {
+                todoAdapter = TodoAdapter(this, todoList)
+                recyclerTodo.adapter = todoAdapter
 
-        //recyclerTodo.layoutManager = GridLayoutManager(
-        //    this, 2)
+                val touchCallbakList = TodoReyclerTouchCallback(todoAdapter)
+                val itemTouchHelper = ItemTouchHelper(touchCallbakList)
+                itemTouchHelper.attachToRecyclerView(recyclerTodo)
+            }
+        }.start()
     }
 
 
-    fun showAddTodoDialog(){
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Create new todo")
+    fun showAddTodoDialog() {
+        TodoDialog().show(supportFragmentManager, "Dialog")
+    }
 
-        val etTodoText = EditText(this)
-        builder.setView(etTodoText)
+    var editIndex: Int = -1
 
-        builder.setPositiveButton("Ok") { dialog, which ->
-            todoAdapter.addTodo(
-                Todo(
-                    Date(System.currentTimeMillis()).toString(),
-                    false,
-                    etTodoText.text.toString()
-                )
-            )
-        }
+    public fun showEditTodoDialog(todoToEdit: Todo, index: Int) {
+        editIndex = index
 
-        builder.show()
+        val editItemDialog = TodoDialog()
+
+        val bundle = Bundle()
+        bundle.putSerializable(KEY_EDIT, todoToEdit)
+        editItemDialog.arguments = bundle
+
+        editItemDialog.show(supportFragmentManager, "EDITDIALOG")
+    }
+
+
+    fun saveTodo(todo: Todo) {
+        Thread {
+            AppDatabase.getInstance(this).todoDao().insertTodo(todo)
+
+            runOnUiThread {
+                todoAdapter.addTodo(todo)
+            }
+        }.start()
+    }
+
+    override fun todoCreated(todo: Todo) {
+        saveTodo(todo)
+    }
+
+    override fun todoUpdated(todo: Todo) {
+        Thread{
+            AppDatabase.getInstance(this).todoDao().updateTodo(todo)
+
+            runOnUiThread {
+                todoAdapter.updateTodo(todo, editIndex)
+            }
+        }.start()
     }
 
 }

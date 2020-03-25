@@ -28,6 +28,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Query"/>
+    <Button
+        android:id="@+id/btnDeleteAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete All"/>
 
     <TextView
         android:id="@+id/tvResult"
