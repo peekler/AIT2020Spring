@@ -60,6 +60,12 @@ class TodoAdapter : RecyclerView.Adapter<TodoAdapter.ViewHolder>,
                 AppDatabase.getInstance(context).todoDao().updateTodo(todoItems[holder.adapterPosition])
             }.start()
         }
+
+        if(todoItems[holder.adapterPosition].category == 0) {
+            holder.ivIcon.setImageResource(R.mipmap.ic_launcher)
+        } else if(todoItems[holder.adapterPosition].category == 1) {
+            holder.ivIcon.setImageResource(R.drawable.todohead)
+        }
     }
 
     private fun deleteTodo(position: Int) {
@@ -100,6 +106,9 @@ class TodoAdapter : RecyclerView.Adapter<TodoAdapter.ViewHolder>,
         val cbDone = itemView.cbDone
         val btnDelete = itemView.btnDelete
         val btnEdit = itemView.btnEdit
+        val ivIcon = itemView.ivIcon
+
+
     }
 
 }

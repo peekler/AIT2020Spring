@@ -1,5 +1,11 @@
 <resources>
-    <string name="app_name">TodoRecyclerViewDemo</string>
+    <string name="app_name">Todo application</string>
+
+    <string-array name="categories">
+        <item>Important</item>
+        <item>Low</item>
+    </string-array>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
