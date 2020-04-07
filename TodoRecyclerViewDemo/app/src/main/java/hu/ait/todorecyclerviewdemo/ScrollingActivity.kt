@@ -117,6 +117,7 @@ class ScrollingActivity : AppCompatActivity(), TodoDialog.TodoHandler {
                 todoAdapter.addTodo(todo)
             }
         }.start()
+
     }
 
     override fun todoCreated(todo: Todo) {

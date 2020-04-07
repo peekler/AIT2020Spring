@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "605097541599",
+    "firebase_url": "https://aitforum2020spring.firebaseio.com",
+    "project_id": "aitforum2020spring",
+    "storage_bucket": "aitforum2020spring.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:605097541599:android:7e370b3d73b148064b0e6a",
+        "android_client_info": {
+          "package_name": "hu.ait.aitforum"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "605097541599-ukg41ogltb7lp2ogbefu214peldurhk6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCuWpCNKM8AgrbvWvUr1dXKLtkM_S2IF8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "605097541599-ukg41ogltb7lp2ogbefu214peldurhk6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
