@@ -15,4 +15,52 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
+
+    fun loginClick(v: View){
+        if (!isFormValid()) {
+            return
+        }
+
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(
+            etEmail.text.toString(), etPassword.text.toString()
+        ).addOnSuccessListener {
+            startActivity(Intent(this@MainActivity, ForumActivity::class.java))
+        }.addOnFailureListener{
+            Toast.makeText(this@MainActivity,
+                "Login error: ${it.message}",
+                Toast.LENGTH_LONG).show()
+        }
+    }
+
+    fun registerClick(v: View){
+        if (!isFormValid()){
+            return
+        }
+
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(
+            etEmail.text.toString(), etPassword.text.toString()
+        ).addOnSuccessListener {
+            Toast.makeText(this@MainActivity,
+                "Registration OK",
+                Toast.LENGTH_LONG).show()
+        }.addOnFailureListener{
+            Toast.makeText(this@MainActivity,
+                "Error: ${it.message}",
+                Toast.LENGTH_LONG).show()
+        }
+    }
+
+    fun isFormValid(): Boolean {
+        return when {
+            etEmail.text.isEmpty() -> {
+                etEmail.error = "This field can not be empty"
+                false
+            }
+            etPassword.text.isEmpty() -> {
+                etPassword.error = "The password can not be empty"
+                false
+            }
+            else -> true
+        }
+    }
 }
