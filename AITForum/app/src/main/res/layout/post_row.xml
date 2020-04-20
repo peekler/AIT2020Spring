@@ -32,6 +32,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+        <ImageView
+            android:id="@+id/ivPhoto"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:scaleType="fitXY"
+            android:visibility="gone"/>
+
         <Button
             android:id="@+id/btnDelete"
             android:layout_width="wrap_content"

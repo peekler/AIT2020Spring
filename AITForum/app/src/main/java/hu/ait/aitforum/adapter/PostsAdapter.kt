@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.google.firebase.firestore.FirebaseFirestore
 import hu.ait.aitforum.R
 import hu.ait.aitforum.data.Post
 import kotlinx.android.synthetic.main.post_row.view.*
@@ -47,21 +49,45 @@ class PostsAdapter : RecyclerView.Adapter<PostsAdapter.ViewHolder> {
         } else {
             holder.btnDelete.visibility = View.GONE
         }
+
+        holder.btnDelete.setOnClickListener {
+            removePost(holder.adapterPosition)
+        }
+
+        if (post.imgUrl.isNotEmpty()){
+            holder.ivPhoto.visibility = View.VISIBLE
+            Glide.with(context).load(post.imgUrl).into(holder.ivPhoto)
+        } else {
+            holder.ivPhoto.visibility = View.GONE
+        }
     }
 
     fun addPost(post: Post, key: String) {
         postsList.add(post)
         postKeys.add(key)
-        notifyDataSetChanged()
+        //notifyDataSetChanged()
+        notifyItemInserted(postsList.lastIndex)
     }
 
+    // when I remove the post object
     private fun removePost(index: Int) {
+        FirebaseFirestore.getInstance().collection("posts").document(
+            postKeys[index]
+        ).delete()
 
+        postsList.removeAt(index)
+        postKeys.removeAt(index)
+        notifyItemRemoved(index)
     }
 
-
+    // when somebody else removes an object
     fun removePostByKey(key: String) {
-
+        val index = postKeys.indexOf(key)
+        if (index != -1) {
+            postsList.removeAt(index)
+            postKeys.removeAt(index)
+            notifyItemRemoved(index)
+        }
     }
 
 
@@ -70,5 +96,6 @@ class PostsAdapter : RecyclerView.Adapter<PostsAdapter.ViewHolder> {
         var tvTitle = itemView.tvTitle
         var tvBody = itemView.tvBody
         var btnDelete = itemView.btnDelete
+        var ivPhoto = itemView.ivPhoto
     }
 }
