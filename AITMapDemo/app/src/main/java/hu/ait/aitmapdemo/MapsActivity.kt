@@ -1,7 +1,11 @@
 package hu.ait.aitmapdemo
 
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,8 +18,13 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.sucho.placepicker.AddressData
+import com.sucho.placepicker.Constants
+import com.sucho.placepicker.MapType
+import com.sucho.placepicker.PlacePicker
 import kotlinx.android.synthetic.main.activity_maps.*
 import java.util.*
+
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     MyLocationProvider.OnNewLocationAvailable {
@@ -39,8 +48,71 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
             mMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
         }
 
+        btnPick.setOnClickListener {
+
+        }
+
         requestNeededPermission()
+
+
+        tvLocation.setOnClickListener {
+            if (prevLocation != null){
+                Thread {
+                    try {
+                        val gc = Geocoder(this, Locale.getDefault())
+                        var addrs: List<Address> =
+                            gc.getFromLocation(prevLocation!!.latitude, prevLocation!!.longitude, 3)
+                        val addr =
+                            "${addrs[0].getAddressLine(0)}, ${addrs[0].getAddressLine(1)}," +
+                                    " ${addrs[0].getAddressLine(2)}"
+
+                        runOnUiThread {
+                            Toast.makeText(this, addr, Toast.LENGTH_LONG).show()
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        runOnUiThread {
+                            Toast.makeText(
+                                this@MapsActivity,
+                                "Error: ${e.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                }.start()
+            }
+        }
+
+
+        btnPick.setOnClickListener {
+            val intent = PlacePicker.IntentBuilder()
+                .setLatLong(47.0, 19.0)  // Initial Latitude and Longitude the Map will load into
+                .showLatLong(true)  // Show Coordinates in the Activity
+                .setMapZoom(12.0f)  // Map Zoom Level. Default: 14.0
+                .setAddressRequired(true) // Set If return only Coordinates if cannot fetch Address for the coordinates. Default: True
+                .setMarkerImageImageColor(R.color.colorPrimary)
+                .setMapType(MapType.NORMAL) //Activate GooglePlace Search Bar. Default is false/not activated. SearchBar is a chargeable feature by Google
+                .onlyCoordinates(true)  //Get only Coordinates from Place Picker
+                .build(this)
+
+            startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST)
+
+        }
+
     }
+
+    override fun onActivityResult(requestCode: Int,resultCode: Int,data: Intent?) {
+        if (requestCode == Constants.PLACE_PICKER_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                val addressData = data?.getParcelableExtra<AddressData>(Constants.ADDRESS_INTENT)
+                Toast.makeText(this, addressData.toString(), Toast.LENGTH_LONG).show()
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
+
 
     private fun requestNeededPermission() {
         if (ContextCompat.checkSelfPermission(
