@@ -12,10 +12,27 @@
         android:layout_height="wrap_content"
         android:text="Hello World!" />
 
-    <fragment
+    <Button
+        android:id="@+id/btnMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Fragment Main"/>
+    <Button
+        android:id="@+id/btnDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Fragment Details"/>
+
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+    <!-- <fragment
         android:id="@+id/fragmentMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:name="hu.ait.fragmentdemo.FragmentMain"/>
+        android:name="hu.ait.fragmentdemo.FragmentMain"/> -->
 
 </LinearLayout>

@@ -10,6 +10,10 @@ import kotlinx.android.synthetic.main.fragment_main.view.*
 
 class FragmentMain : Fragment() {
 
+    companion object {
+        const val TAG = "TAG_FRAGMENT_MAIN"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -19,6 +23,10 @@ class FragmentMain : Fragment() {
 
         rootView.btnDemo1.setOnClickListener {
             Toast.makeText(activity, "Demo1", Toast.LENGTH_LONG).show()
+        }
+
+        rootView.btnDemo2.setOnClickListener {
+            (activity as MainActivity).showFragmentByTag(FragmentDetails.TAG)
         }
 
 
