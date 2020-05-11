@@ -1,0 +1,7 @@
+#Internal package file, do not edit.
+#Mon May 11 12:20:08 CEST 2020
+0.baseType=DIRECTORY
+0.base=/Users/eklerpeter/Development/VC/AIT2020Spring/NFCTicTacToeAS/app/build/intermediates/transforms/dexMerger/debug/0
+0.path=classes.dex
+0.set=DEX
+count=1

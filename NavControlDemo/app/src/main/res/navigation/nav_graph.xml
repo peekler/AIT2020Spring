@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/itemsFragment">
+
+    <fragment
+        android:id="@+id/itemsFragment"
+        android:name="hu.ait.navcontroldemo.ItemsFragment"
+        android:label="fragment_items"
+        tools:layout="@layout/fragment_items" >
+        <action
+            android:id="@+id/action_itemsFragment_to_addressConfirmFragment"
+            app:destination="@id/addressConfirmFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addressConfirmFragment"
+        android:name="hu.ait.navcontroldemo.AddressConfirmFragment"
+        android:label="fragment_address_confirm"
+        tools:layout="@layout/fragment_address_confirm" />
+</navigation>
